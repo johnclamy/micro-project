@@ -1,4 +1,14 @@
 from fastapi import FastAPI
+from enum import Enum
+
+
+dev_tools = [{'frontend': 'next.js', 'backend': 'fastapi', 'mobile': 'react native', 'aiops': 'pydanticai', 'devops': 'docker', 'db': 'postgresql'}]
+
+
+class ModelName(str, Enum):
+    alexnet =  'alexnet'
+    resnet = 'resnet'
+    lenet = 'lenet'
 
 
 app = FastAPI()
@@ -6,14 +16,16 @@ app = FastAPI()
 
 @app.get('/')
 async def root():
-    return {'message': 'Hello, World!'}
+    return {'message': 'AI model evolution'}
 
 
-@app.get('/users/me')
-async def read_user_me():
-    return {'user_id': 'the current user'}
+# Path Parameter with Function Parameters
+@app.get('/files/{file_path:path}')
+async def read_file(file_path: str):
+    return {'file_path': file_path}
 
 
-@app.get('/users/{user_id}')
-async def read_user(user_id: int):
-    return {'user_id: ': user_id}
+# Query Parameter with Function Query Parameter
+@app.get('/tools/')
+async def read_dev_tools(skip: int = 0, limit: int = 5):
+    return dev_tools[skip: skip + limit]
