@@ -1,31 +1,34 @@
-from fastapi import FastAPI
-from enum import Enum
+from fastapi import FastAPI, Query, HTTPException
+from typing import Optional
+from .schema import MenuItem
+from .data import menu_items
 
 
-dev_tools = [{'frontend': 'next.js', 'backend': 'fastapi', 'mobile': 'react native', 'aiops': 'pydanticai', 'devops': 'docker', 'db': 'postgresql'}]
+app = FastAPI(title='Restaurant menu')
 
 
-class ModelName(str, Enum):
-    alexnet =  'alexnet'
-    resnet = 'resnet'
-    lenet = 'lenet'
+@app.get("/menu", response_model=list[MenuItem])
+async def get_menu(category: Optional[str] = Query(
+    default=None,
+    description="Filter by category"
+)):
+    # 01. Return the list of menu items if no category is specified
+    # -------------------------------------------
+    if category is None:
+        return menu_items
+    # -------------------------------------------
 
+    # 02. Filter the menu items by category if specified
+    # -------------------------------------------
+    filtered_items = [item for item in menu_items if item.category == category]
 
-app = FastAPI()
-
-
-@app.get('/')
-async def root():
-    return {'message': 'AI model evolution'}
-
-
-# Path Parameter with Function Parameters
-@app.get('/files/{file_path:path}')
-async def read_file(file_path: str):
-    return {'file_path': file_path}
-
-
-# Query Parameter with Function Query Parameter
-@app.get('/tools/')
-async def read_dev_tools(skip: int = 0, limit: int = 5):
-    return dev_tools[skip: skip + limit]
+    # 03. Raise an HTTPException if no items are found for the specified category
+    # -------------------------------------------
+    if not filtered_items:
+        raise HTTPException(
+            status_code=404,
+            detail="No items found for the specified category"
+        )
+    # -------------------------------------------
+    
+    return filtered_items
