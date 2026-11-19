@@ -1,6 +1,6 @@
 import os
 import uvicorn
-from collections.abc import AsyncIterator
+from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from micro_project.data.db import create_db_and_tables
@@ -10,7 +10,7 @@ __all__ = ["app"]
 
 
 @asynccontextmanager
-async def lifespan(_: FastAPI) -> AsyncIterator[None]:
+async def lifespan(_: FastAPI) -> AsyncGenerator[None, None]:
     create_db_and_tables()
     yield
 
