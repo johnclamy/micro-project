@@ -16,9 +16,10 @@ SQLITE_URL = f"sqlite:///{DATABASE_PATH.as_posix()}"
 # SQLite needs this because FastAPI may access the DB from multiple threads.
 engine = create_engine(
     SQLITE_URL,
-    echo=os.getenv("SQL_ECHO", "").lower() in {"1", "true", "yes"},
-    connect_args={"check_same_thread": False},
-    pool_pre_ping=True,
+    echo=True
+    # echo=os.getenv("SQL_ECHO", "").lower() in {"1", "true", "yes"},
+    # connect_args={"check_same_thread": False},
+    # pool_pre_ping=True,
 )
 
 
