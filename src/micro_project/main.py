@@ -4,6 +4,7 @@ from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from micro_project.data.db import create_db_and_tables
+from micro_project.data.seed import create_heroes
 
 
 __all__ = ["app"]
@@ -12,6 +13,7 @@ __all__ = ["app"]
 @asynccontextmanager
 async def lifespan(_: FastAPI) -> AsyncGenerator[None, None]:
     create_db_and_tables()
+    create_heroes()
     yield
 
 
