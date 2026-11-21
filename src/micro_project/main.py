@@ -1,4 +1,3 @@
-import uvicorn
 from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
@@ -36,9 +35,5 @@ async def health() -> dict[str, str]:
 
 
 if __name__ == "__main__":
-    uvicorn.run(
-        "micro_project.main:app",
-        host="127.0.0.1",
-        port=8000,
-        reload=True,
-    )
+    from micro_project.cli import main
+    main()
