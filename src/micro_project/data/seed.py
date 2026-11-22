@@ -14,6 +14,9 @@ def create_heroes() -> None:
             Hero(name="Deadpond", secret_name="Dive Wilson"),
             Hero(name="Spider-Boy", secret_name="Pedro Parqueador"),
             Hero(name="Rusty-Man", secret_name="Tommy Sharp", age=48),
+            Hero(name="Tarantula", secret_name="Natalia Roman-on", age=32),
+            Hero(name="Black Lion", secret_name="Trevor Challa", age=35),
+            Hero(name="Captain North America", secret_name="Esteban Rogelios", age=93)
         ]
 
         session.add_all(h for h in new_heroes if h.name not in existing_heroes)
